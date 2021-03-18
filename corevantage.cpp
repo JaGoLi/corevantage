@@ -9,6 +9,7 @@
 #include <QProcess>
 #include <QDir>
 #include <QFileDialog>
+#include <QShortcut>
 
 corevantage::corevantage(QWidget *parent)
     : QMainWindow(parent)
@@ -64,8 +65,19 @@ corevantage::corevantage(QWidget *parent)
     ui->debugCombo->addItems(debug_options);
 
 
+    //define error window
+    error_win.setWindowTitle("Error Occurred");
+    error_win.setText("An error has occurred");
+    error_win.setInformativeText("Nvramtool was not able to access cmos settings. Look at documentation for possible causes of erros.");
+    error_win.setIcon(QMessageBox::Critical);
+
+
     //Center window on screen
     move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
+
+    //Connect enter key to OK button
+    QShortcut* returnAction = new QShortcut(QKeySequence("Return"), this);
+    connect(returnAction, &QShortcut::activated, this, &corevantage::saveAndClose);
 
     //slider connections
     connect(ui->volumeSlider, &QSlider::valueChanged, this, &corevantage::setVolValue);
@@ -77,10 +89,10 @@ corevantage::corevantage(QWidget *parent)
 
 
     //close connections
-    connect(ui->confirmBox, &QDialogButtonBox::rejected, this, &corevantage::closeWindow);
+    connect(ui->confirmBox, &QDialogButtonBox::rejected, this, &QMainWindow::close);
     connect(ui->confirmBox, &QDialogButtonBox::accepted, this, &corevantage::saveAndClose);
 
-    connect(ui->actionExit, &QAction::triggered, this, &corevantage::closeWindow);
+    connect(ui->actionExit, &QAction::triggered, this, &QMainWindow::close);
     connect(ui->actionSave_and_Exit, &QAction::triggered, this, &corevantage::saveAndClose);
 }
 
@@ -98,13 +110,56 @@ void corevantage::showEvent(QShowEvent *ev)
 
 //SLOTS
 
-void corevantage::closeWindow() {
-    this->close();
+void corevantage::closeWindow(int result) {
+    //debug return value
+    qDebug() << "Nvram write return code: " << result;
+
+    if (result == 0) {
+        QMessageBox reboot_win;
+
+        reboot_win.setWindowTitle("Reboot System");
+        reboot_win.setText("Do you want to reboot your system now?");
+        reboot_win.setInformativeText("Changes to bios settings have been successfully applied");
+        reboot_win.setIcon(QMessageBox::Question);
+
+        QPushButton* reboot_but = reboot_win.addButton("Reboot Now", QMessageBox::YesRole);
+        reboot_win.addButton("Reboot Later", QMessageBox::NoRole);
+
+        reboot_win.exec();
+        if (reboot_win.clickedButton() == reboot_but) {
+            //reboot computer
+            QProcess* reboot_proc = new QProcess(this);
+            QStringList args;
+            args << "reboot";
+            reboot_proc->start("pkexec", args);
+        }
+        else {
+            this->close();
+        }
+    }
+
+    //handle error
+    else {
+        error_win.exec();
+        this->close();
+    }
 }
 
 void corevantage::saveAndClose() {
+    //save visible config to file
     writeToFile(cfgpath_s);
-    this->close();
+
+    //info and args
+    QProcess* nvram_write = new QProcess(this);
+    QString sudo_prog = "pkexec";
+    QStringList args = {"nvramtool", "-p", cfgpath_q};
+
+    //connections
+    connect(nvram_write, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, [=](int num){closeWindow(num);});
+
+    //exec
+    nvram_write->start(sudo_prog, args);
+
 }
 
 void corevantage::setRebootValue() {
@@ -152,9 +207,14 @@ void corevantage::getSettings() {
     }
 
     //Config file location
-    QString cfgpath_q = user_dir + "nvramtool.cfg";
+    cfgpath_q = user_dir + "nvramtool.cfg";
     cfgpath_s = cfgpath_q.toUtf8().constData();
     nvram_a->setStandardOutputFile(cfgpath_q);
+
+    //remove config file if exists
+    if (QFile::exists(cfgpath_q)) {
+        QFile::remove(cfgpath_q);
+    }
 
     connect(nvram_a, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, [=](int num){displaySettings(num);});
 
@@ -191,36 +251,45 @@ void corevantage::hexToSlider(std::string in_string, QSlider* slider) {
 }
 
 void corevantage::displaySettings(int result) {
-    std::string result_num = std::to_string(result);
-    init_config->get_values();
+    qDebug() << "Nvram Read return code: " << result;
+
+    if (result == 0) {
+        init_config->get_values();
 
 
-    //display text combos
-    ui->gfxCombo->setCurrentIndex(gfx_map[init_config->values[18]]);
-    ui->defaultCombo->setCurrentIndex(device_map[init_config->values[17]]);
-    textToDisplay(sata_options, init_config->values[3], ui->sataCombo);
-    textToDisplay(battery_options, init_config->values[5], ui->batteryCombo);
-    textToDisplay(boot_options, init_config->values[0], ui->bootCombo);
-    textToDisplay(debug_options, init_config->values[2], ui->debugCombo);
+        //display text combos
+        ui->gfxCombo->setCurrentIndex(gfx_map[init_config->values[18]]);
+        ui->defaultCombo->setCurrentIndex(device_map[init_config->values[17]]);
+        textToDisplay(sata_options, init_config->values[3], ui->sataCombo);
+        textToDisplay(battery_options, init_config->values[5], ui->batteryCombo);
+        textToDisplay(boot_options, init_config->values[0], ui->bootCombo);
+        textToDisplay(debug_options, init_config->values[2], ui->debugCombo);
 
-    //display slider values
-    hexToSlider(init_config->values[10], ui->volumeSlider);
-    hexToSlider(init_config->values[1], ui->rebootSlider);
+        //display slider values
+        hexToSlider(init_config->values[10], ui->volumeSlider);
+        hexToSlider(init_config->values[1], ui->rebootSlider);
 
-    //display checkbox states
-    checkToDisplay(init_config->values[8], ui->wlanBox);
-    checkToDisplay(init_config->values[6], ui->btBox);
-    checkToDisplay(init_config->values[7], ui->wwanBox);
-    checkToDisplay(init_config->values[9], ui->tpBox);
-    checkToDisplay(init_config->values[11], ui->swapBox);
-    checkToDisplay(init_config->values[12], ui->stickyBox);
-    checkToDisplay(init_config->values[13], ui->pmbeepBox);
-    checkToDisplay(init_config->values[14], ui->lbbeepBox);
-    checkToDisplay(init_config->values[4], ui->failBox);
-    checkToDisplay(init_config->values[15], ui->uwbBox);
+        //display checkbox states
+        checkToDisplay(init_config->values[8], ui->wlanBox);
+        checkToDisplay(init_config->values[6], ui->btBox);
+        checkToDisplay(init_config->values[7], ui->wwanBox);
+        checkToDisplay(init_config->values[9], ui->tpBox);
+        checkToDisplay(init_config->values[11], ui->swapBox);
+        checkToDisplay(init_config->values[12], ui->stickyBox);
+        checkToDisplay(init_config->values[13], ui->pmbeepBox);
+        checkToDisplay(init_config->values[14], ui->lbbeepBox);
+        checkToDisplay(init_config->values[4], ui->failBox);
+        checkToDisplay(init_config->values[15], ui->uwbBox);
 
-    //set device list text
-    ui->devicesLine->setText(QString::fromStdString(init_config->values[16]));
+        //set device list text
+        ui->devicesLine->setText(QString::fromStdString(init_config->values[16]));
+    }
+
+    //handle error
+    else {
+        error_win.exec();
+        this->close();
+    }
 }
 
 void corevantage::comboToFile(std::fstream& output, std::string precursor, QComboBox* box, std::string successor = "") {
@@ -250,7 +319,7 @@ void corevantage::lineToFile(std::fstream& output, QLineEdit* line) {
             output << "boot_devices = " << line->text().toUtf8().constData() << std::endl;
         }
         else {
-            output << "boot_devices = 0x0" << std::endl;
+            output << "#boot_devices = " << std::endl;
         }
 }
 

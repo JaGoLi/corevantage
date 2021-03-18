@@ -8,6 +8,7 @@
 #include <QStringList>
 #include <QComboBox>
 #include <QCheckBox>
+#include <QMessageBox>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class corevantage; }
@@ -20,6 +21,7 @@ class corevantage : public QMainWindow
 public:
     corevantage(QWidget *parent = nullptr);
     readCfg* init_config;
+    QString cfgpath_q;
     std::string cfgpath_s;
     ~corevantage();
 
@@ -35,12 +37,15 @@ public:
     std::map<std::string, int> gfx_map;
     std::map<std::string, int> device_map;
 
+    //windows
+    QMessageBox error_win;
+
 protected:
     void showEvent(QShowEvent *ev);
 
 public slots:
     //closing window
-    void closeWindow();
+    void closeWindow(int result);
     void saveAndClose();
 
     //slider connections
