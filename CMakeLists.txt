@@ -15,6 +15,12 @@ set(CMAKE_SKIP_INSTALL_ALL_DEPENDENCY true)
 
 INCLUDE(GNUInstallDirs)
 
+
+#Set default prefix to /usr
+if(CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
+  set(CMAKE_INSTALL_PREFIX "/usr")
+endif()
+
 # uninstall target
 if(NOT TARGET uninstall)
   configure_file(
@@ -81,6 +87,9 @@ install(FILES icon/512x512.png
 
 install(FILES desktop/corevantage.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
+
+install(FILES polkit/org.jagoli.nvramtool.policy polkit/org.jagoli.reboot.policy
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/polkit-1/actions)
 
 ##set default target to null
 add_executable(ALL)
