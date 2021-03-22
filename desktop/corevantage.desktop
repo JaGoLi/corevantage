@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=Corevantage
+StartupWMCLass=Corevantage
+Exec=/usr/bin/corevantage
+Icon=corevantage
+Type=Application
+Categories=Utility
+Comment=A graphical interface to set options on devices with coreboot firmware.
+Keywords=Coreboot,BIOS
