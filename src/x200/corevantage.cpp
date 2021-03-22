@@ -68,7 +68,7 @@ corevantage::corevantage(QWidget *parent)
     //define error window
     error_win.setWindowTitle("Error Occurred");
     error_win.setText("An error has occurred");
-    error_win.setInformativeText("Nvramtool was not able to access cmos settings. Look at documentation for possible causes of erros.");
+    error_win.setInformativeText("Nvramtool was not able to access cmos settings. Look at documentation for possible causes of errors.");
     error_win.setIcon(QMessageBox::Critical);
 
 
