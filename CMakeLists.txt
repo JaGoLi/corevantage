@@ -11,6 +11,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+INCLUDE(GNUInstallDirs)
 
 find_package(QT NAMES Qt6 Qt5 COMPONENTS Widgets REQUIRED)
 find_package(Qt${QT_VERSION_MAJOR} COMPONENTS Widgets REQUIRED)
@@ -42,6 +43,31 @@ endif()
 
 target_link_libraries(x200 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 set_target_properties(x200 PROPERTIES OUTPUT_NAME corevantage)
+
+
+install(TARGETS x200 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+install(FILES icons/16x16.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
+    RENAME corevantage.png)
+install(FILES icons/32x32.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps
+    RENAME corevantage.png)
+install(FILES icons/64x64.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps
+    RENAME corevantage.png)
+install(FILES icons/128x128.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/128x128/apps
+    RENAME corevantage.png)
+install(FILES icons/256x256.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/256x256/apps
+    RENAME corevantage.png)
+install(FILES icons/512x512.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/512x512/apps
+    RENAME corevantage.png)
+
+install(FILES desktop/corevantage.desktop
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
 
 ##set default target to null
 add_executable(ALL)
