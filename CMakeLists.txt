@@ -42,6 +42,12 @@ set(X200_SOURCES
         src/x200/corevantage.cpp
         src/x200/corevantage.h
         src/x200/corevantage.ui
+	src/x200/infowindow.cpp
+	src/x200/infowindow.h
+	src/x200/infowindow.ui
+	src/x200/aboutwindow.cpp
+	src/x200/aboutwindow.h
+	src/x200/aboutwindow.ui
 )
 
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)

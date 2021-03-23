@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include "readcfg.h"
+#include "infowindow.h"
+#include "aboutwindow.h"
 
 #include <string>
 #include <QStringList>
@@ -39,9 +41,13 @@ public:
 
     //windows
     QMessageBox error_win;
+    infoWindow info_win;
+    aboutWindow about_win;
+
 
 protected:
     void showEvent(QShowEvent *ev);
+    void closeEvent(QCloseEvent *ev);
 
 public slots:
     //closing window

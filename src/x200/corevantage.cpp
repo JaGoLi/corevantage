@@ -1,7 +1,7 @@
 #include "corevantage.h"
 #include "./ui_corevantage.h"
-#include <QDebug>
 
+#include <QDebug>
 #include <iostream>
 #include <fstream>
 #include <QPushButton>
@@ -71,6 +71,12 @@ corevantage::corevantage(QWidget *parent)
     error_win.setInformativeText("Nvramtool was not able to access cmos settings. Look at documentation for possible causes of errors.");
     error_win.setIcon(QMessageBox::Critical);
 
+    //connect information window to information button
+    connect(ui->actionInformation, &QAction::triggered, this, [=](){info_win.show();});
+
+    //connect about window to about button
+    connect(ui->actionAbout_2, &QAction::triggered, this, [=](){about_win.show();});
+
 
     //Center window on screen
     move(QGuiApplication::screens().at(0)->geometry().center() - frameGeometry().center());
@@ -106,6 +112,13 @@ void corevantage::showEvent(QShowEvent *ev)
 {
     QMainWindow::showEvent(ev);
     getSettings();
+}
+
+void corevantage::closeEvent(QCloseEvent *ev)
+{
+    info_win.close();
+    about_win.close();
+    QMainWindow::closeEvent(ev);
 }
 
 //SLOTS
