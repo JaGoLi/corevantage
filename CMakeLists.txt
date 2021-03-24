@@ -91,6 +91,9 @@ install(FILES icon/512x512.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/512x512/apps
     RENAME corevantage.png)
 
+install(FILES icon/aboutIcon.png
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/corevantage)
+
 install(FILES desktop/corevantage.desktop
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/applications)
 

@@ -34,7 +34,7 @@
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../../../usr/share/icons/hicolor/256x256/apps/corevantage.png</pixmap>
+        <pixmap>../../../../usr/share/corevantage/aboutIcon.png</pixmap>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
