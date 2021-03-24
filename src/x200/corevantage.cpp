@@ -17,6 +17,10 @@ corevantage::corevantage(QWidget *parent)
 {
     ui->setupUi(this);
 
+    //set window title and icon
+    this->setWindowTitle("Corevantage");
+    this->setWindowIcon(QIcon::fromTheme("corevantage"));
+
     //construct maps
 
     //gfx_map
@@ -67,6 +71,7 @@ corevantage::corevantage(QWidget *parent)
 
     //define error window
     error_win.setWindowTitle("Error Occurred");
+    error_win.setWindowIcon(QIcon::fromTheme("corevantage"));
     error_win.setText("An error has occurred");
     error_win.setInformativeText("Nvramtool was not able to access cmos settings. Look at documentation for possible causes of errors.");
     error_win.setIcon(QMessageBox::Critical);
@@ -131,6 +136,7 @@ void corevantage::closeWindow(int result) {
         QMessageBox reboot_win;
 
         reboot_win.setWindowTitle("Reboot System");
+        reboot_win.setWindowIcon(QIcon::fromTheme("corevantage"));
         reboot_win.setText("Do you want to reboot your system now?");
         reboot_win.setInformativeText("Changes to bios settings have been successfully applied");
         reboot_win.setIcon(QMessageBox::Question);
@@ -184,25 +190,37 @@ void corevantage::setVolValue() {
  }
 
 void corevantage::getFromFile(){
+    //setup dialog box
     QFileDialog diag(this, "Select File", QDir::homePath(), "Coreboot Configuration Files (*.cfg)");
+    diag.setWindowIcon(QIcon::fromTheme("corevantage"));
     diag.setDefaultSuffix(".cfg");
+
+    //exec
     diag.exec();
     QString user_file = diag.selectedFiles().constFirst();
     std::string selected_file = user_file.toUtf8().constData();
-    if (!selected_file.empty()) {
+
+    //result
+    if (diag.result() == QDialog::Accepted) {
         delete init_config;
         init_config = new readCfg(selected_file);
+        displaySettings(0);
     }
-    displaySettings(0);
 }
 
 void corevantage::writeSettings() {
+    //setup dialog box
     QFileDialog diag(this, "Enter File to Save", QDir::homePath(), "Coreboot Configuration Files (*.cfg)");
+    diag.setWindowIcon(QIcon::fromTheme("corevantage"));
     diag.setDefaultSuffix(".cfg");
+
+    //exec
     diag.exec();
     QString user_file = diag.selectedFiles().constFirst();
     std::string selected_file = user_file.toUtf8().constData();
-    if (!selected_file.empty()) {
+
+    //result
+    if (diag.result() == QDialog::Accepted) {
         writeToFile(selected_file);
     }
 }
