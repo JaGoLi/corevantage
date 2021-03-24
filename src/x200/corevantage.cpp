@@ -197,11 +197,13 @@ void corevantage::getFromFile(){
 
     //exec
     diag.exec();
-    QString user_file = diag.selectedFiles().constFirst();
-    std::string selected_file = user_file.toUtf8().constData();
 
     //result
     if (diag.result() == QDialog::Accepted) {
+	//convert string
+	QString user_file = diag.selectedFiles().constFirst();
+	std::string selected_file = user_file.toUtf8().constData();
+
         delete init_config;
         init_config = new readCfg(selected_file);
         displaySettings(0);
@@ -216,11 +218,13 @@ void corevantage::writeSettings() {
 
     //exec
     diag.exec();
-    QString user_file = diag.selectedFiles().constFirst();
-    std::string selected_file = user_file.toUtf8().constData();
 
     //result
     if (diag.result() == QDialog::Accepted) {
+	//convert string
+    	QString user_file = diag.selectedFiles().constFirst();
+    	std::string selected_file = user_file.toUtf8().constData();
+
         writeToFile(selected_file);
     }
 }
