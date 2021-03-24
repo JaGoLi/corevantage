@@ -76,13 +76,13 @@ install(FILES icon/16x16.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
     RENAME corevantage.png)
 install(FILES icon/22x22.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/22x22/apps
     RENAME corevantage.png)
 install(FILES icon/32x32.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/32x32/apps
     RENAME corevantage.png)
 install(FILES icon/48x48.png
-    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
+    DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/48x48/apps
     RENAME corevantage.png)
 install(FILES icon/64x64.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/64x64/apps
