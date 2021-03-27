@@ -429,6 +429,9 @@
             </item>
             <item>
              <widget class="QCheckBox" name="swapBox">
+              <property name="enabled">
+               <bool>false</bool>
+              </property>
               <property name="maximumSize">
                <size>
                 <width>115</width>
@@ -611,7 +614,7 @@
                <enum>Qt::LeftToRight</enum>
               </property>
               <property name="text">
-               <string>Power On After Fail</string>
+               <string>Power On AC Attach</string>
               </property>
               <property name="alignment">
                <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>

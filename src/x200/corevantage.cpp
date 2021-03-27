@@ -27,7 +27,7 @@ corevantage::corevantage(QWidget *parent)
     gfx_map["32M"] = 0;
     gfx_map["48M"] = 1;
     gfx_map["64M"] = 2;
-    gfx_map["98M"] = 3;
+    gfx_map["96M"] = 3;
     gfx_map["128M"] = 4;
     gfx_map["160M"] = 5;
     gfx_map["224M"] = 6;
@@ -309,7 +309,8 @@ void corevantage::displaySettings(int result) {
         checkToDisplay(init_config->values[6], ui->btBox);
         checkToDisplay(init_config->values[7], ui->wwanBox);
         checkToDisplay(init_config->values[9], ui->tpBox);
-        checkToDisplay(init_config->values[11], ui->swapBox);
+        //disable because of null effect: upstream bug
+        //checkToDisplay(init_config->values[11], ui->swapBox);
         checkToDisplay(init_config->values[12], ui->stickyBox);
         checkToDisplay(init_config->values[13], ui->pmbeepBox);
         checkToDisplay(init_config->values[14], ui->lbbeepBox);
