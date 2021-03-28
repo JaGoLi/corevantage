@@ -149,7 +149,7 @@ void corevantage::closeWindow(int result) {
             //reboot computer
             QProcess* reboot_proc = new QProcess(this);
             QStringList args;
-            args << "reboot";
+            args << "/usr/sbin/reboot";
             reboot_proc->start("pkexec", args);
         }
         else {
@@ -171,7 +171,7 @@ void corevantage::saveAndClose() {
     //info and args
     QProcess* nvram_write = new QProcess(this);
     QString sudo_prog = "pkexec";
-    QStringList args = {"nvramtool", "-p", cfgpath_q};
+    QStringList args = {"/usr/sbin/nvramtool", "-p", cfgpath_q};
 
     //connections
     connect(nvram_write, static_cast<void(QProcess::*)(int, QProcess::ExitStatus)>(&QProcess::finished), this, [=](int num){closeWindow(num);});
@@ -233,7 +233,7 @@ void corevantage::getSettings() {
     //Program Details
     QProcess* nvram_a = new QProcess(this);
     QString sudo_prog = "pkexec";
-    QStringList args = {"nvramtool", "-a"};
+    QStringList args = {"/usr/sbin/nvramtool", "-a"};
 
     //Configuration directory
     QString user_dir = QDir::homePath() + "/.config/corevantage/";

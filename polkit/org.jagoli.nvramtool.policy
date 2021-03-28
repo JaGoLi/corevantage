@@ -9,7 +9,7 @@
     <defaults>
       <allow_active>auth_admin_keep</allow_active>
     </defaults>
-    <annotate key="org.freedesktop.policykit.exec.path">/usr/local/sbin/nvramtool</annotate>
+    <annotate key="org.freedesktop.policykit.exec.path">/usr/sbin/nvramtool</annotate>
   </action>
 
 </policyconfig>
