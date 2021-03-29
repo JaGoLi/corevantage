@@ -5,6 +5,8 @@ A graphical interface to set options on devices with coreboot firmware.<br/>
 This is a utility that allows users to view and modify coreboot settings usually accessed with `nvramtool` or `nvramcui`. Usage of the application is pretty straight-forward: once the settings have been modified, hit _Save_ and the user will be prompted to reboot the computer. The bios settings will then take effect on reboot. The code for the application has been designed with modularity in mind, in order to port it to many more devices supported by coreboot in the future. As of now, however, it has only been tested to work with the ThinkPad X200 running the latest version of libreboot that can be found at this git repository: https://github.com/JaGoLi/Libreboot-X200-Updated<br/><br/>
 To get more information about the effects of any individual setting in the application, the user can access the _Information_ window under the _Help_ dropdown menu.
 ## Installation
+IMPORTANT: To be able to run this application, the kernel parameter `iomem=relaxed` must be included in the bootloader configuration.<br/>
+For grub, it must be in the `GRUB_CMDLINE_LINE` parameter of the file `/etc/default/grub`. 
 ### Distribution-Specific Packages (Arch Linux, Ubuntu 20.04 and 20.10)
 On Arch-based systems: the user can install the application using an aur helper such as `yay`:<br/>
 `yay -S corevantage-x200`<br/><br/>
