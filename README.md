@@ -6,7 +6,7 @@ This is a utility that allows users to view and modify coreboot settings usually
 To get more information about the effects of any individual setting in the application, the user can access the _Information_ window under the _Help_ dropdown menu.
 ## Installation
 IMPORTANT: To be able to run this application, the kernel parameter `iomem=relaxed` must be included in the bootloader configuration.<br/>
-For grub, it must be in the `GRUB_CMDLINE_LINE` parameter of the file `/etc/default/grub`. 
+For grub, it must be in the `GRUB_CMDLINE_LINUX` parameter of the file `/etc/default/grub`. 
 ### Distribution-Specific Packages (Arch Linux, Ubuntu 20.04 and 20.10)
 On Arch-based systems: the user can install the application using an aur helper such as `yay`:<br/>
 `yay -S corevantage-x200`<br/><br/>
