@@ -31,6 +31,11 @@ corevantage::corevantage(QWidget *parent)
     gfx_map["128M"] = 4;
     gfx_map["160M"] = 5;
 
+    //usbAO_map
+    usbAO_map["Disable"] = 0;
+    usbAO_map["battery"] = 1;
+    usbAO_map["only"] = 2;
+
     //add menu items
 
     //gfx_uma_size
@@ -286,7 +291,7 @@ void corevantage::displaySettings(int result) {
         textToDisplay(debug_options, init_config->values[2], ui->debugCombo);
         textToDisplay(battery_options, init_config->values[5], ui->batteryCombo);
         textToDisplay(sata_options, init_config->values[15], ui->sataCombo);
-        textToDisplay(usb_always_on, init_config->values[16], ui->usbAOCombo);
+        ui->usbAOCombo->setCurrentIndex(usbAO_map[init_config->values[16]]);
         ui->gfxCombo->setCurrentIndex(gfx_map[init_config->values[17]]);
 
         //display slider values

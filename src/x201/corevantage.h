@@ -38,7 +38,7 @@ public:
 
     //maps
     std::map<std::string, int> gfx_map;
-    std::map<std::string, int> device_map;
+    std::map<std::string, int> usbAO_map;
 
     //windows
     QMessageBox error_win;
