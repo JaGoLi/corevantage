@@ -380,7 +380,7 @@ void corevantage::writeToFile(std::string out_file) {
         comboToFile(out_stream, "sata_mode = ", ui->sataCombo);
         comboToFile(out_stream, "usb_always_on = ", ui->usbAOCombo);
         comboToFile(out_stream, "me_state = ", ui->meStateCombo);
-        sliderToFile(out_stream, "me_state_prev = ", ui->meResetSlider);
+        sliderToFile(out_stream, "me_state_prev = 0x", ui->meResetSlider);
         comboToFile(out_stream, "gfx_uma_size = ", ui->gfxCombo, "M");
         sliderToFile(out_stream, "volume = 0x", ui->volumeSlider);
 
