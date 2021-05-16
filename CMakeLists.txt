@@ -140,7 +140,41 @@ endif()
 target_link_libraries(x220 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 set_target_properties(x220 PROPERTIES OUTPUT_NAME corevantage)
 
-install(TARGETS x200 x201 x220 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+set(X230_SOURCES
+        src/x230/main.cpp
+        src/x230/readcfg.h
+        src/x230/readcfg.cpp
+        src/x230/corevantage.cpp
+        src/x230/corevantage.h
+        src/x230/corevantage.ui
+	src/x230/infowindow.cpp
+	src/x230/infowindow.h
+	src/x230/infowindow.ui
+	src/x230/aboutwindow.cpp
+	src/x230/aboutwindow.h
+	src/x230/aboutwindow.ui
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(x230
+        ${X230_SOURCES}
+    )
+else()
+    if(ANDROID)
+        add_library(x230 SHARED
+            ${X230_SOURCES}
+        )
+    else()
+        add_executable(x230
+            ${X230_SOURCES}
+        )
+    endif()
+endif()
+
+target_link_libraries(x230 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+set_target_properties(x230 PROPERTIES OUTPUT_NAME corevantage)
+
+install(TARGETS x200 x201 x220 x230 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES icon/16x16.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
