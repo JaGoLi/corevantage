@@ -174,7 +174,77 @@ endif()
 target_link_libraries(x230 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
 set_target_properties(x230 PROPERTIES OUTPUT_NAME corevantage)
 
-install(TARGETS x200 x201 x220 x230 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
+
+set(T420_SOURCES
+        src/t420/main.cpp
+        src/t420/readcfg.h
+        src/t420/readcfg.cpp
+        src/t420/corevantage.cpp
+        src/t420/corevantage.h
+        src/t420/corevantage.ui
+	src/t420/infowindow.cpp
+	src/t420/infowindow.h
+	src/t420/infowindow.ui
+	src/t420/aboutwindow.cpp
+	src/t420/aboutwindow.h
+	src/t420/aboutwindow.ui
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(t420
+        ${T420_SOURCES}
+    )
+else()
+    if(ANDROID)
+        add_library(t420 SHARED
+            ${T420_SOURCES}
+        )
+    else()
+        add_executable(t420
+            ${T420_SOURCES}
+        )
+    endif()
+endif()
+
+target_link_libraries(t420 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+set_target_properties(t420 PROPERTIES OUTPUT_NAME corevantage)
+
+
+set(T430_SOURCES
+        src/t430/main.cpp
+        src/t430/readcfg.h
+        src/t430/readcfg.cpp
+        src/t430/corevantage.cpp
+        src/t430/corevantage.h
+        src/t430/corevantage.ui
+	src/t430/infowindow.cpp
+	src/t430/infowindow.h
+	src/t430/infowindow.ui
+	src/t430/aboutwindow.cpp
+	src/t430/aboutwindow.h
+	src/t430/aboutwindow.ui
+)
+
+if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
+    qt_add_executable(t430
+        ${T430_SOURCES}
+    )
+else()
+    if(ANDROID)
+        add_library(t430 SHARED
+            ${T430_SOURCES}
+        )
+    else()
+        add_executable(t430
+            ${T430_SOURCES}
+        )
+    endif()
+endif()
+
+target_link_libraries(t430 PRIVATE Qt${QT_VERSION_MAJOR}::Widgets)
+set_target_properties(t430 PROPERTIES OUTPUT_NAME corevantage)
+
+install(TARGETS x200 x201 x220 x230 t420 t430 RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 install(FILES icon/16x16.png
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps
